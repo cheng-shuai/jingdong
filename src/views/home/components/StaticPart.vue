@@ -54,6 +54,9 @@ export default {
     margin: 16px 0;
     display: flex;
     justify-content: space-between;
+    .iconfont {
+      font-size: 19px;
+    }
     &__title {
       font-size: 16px;
       color: #333;
@@ -71,6 +74,7 @@ export default {
     background: #F5F5F5;
     border-radius: 16px;
     .iconfont {
+      font-size: 16px;
       margin-left: 16px;
       color: #B7B7B7;
     }
