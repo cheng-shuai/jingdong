@@ -7,14 +7,23 @@
     <div class="login__input">
       <input type="password" placeholder="请输入密码">
     </div>
-    <div class="login__button">登录</div>
+    <div class="login__button" @click="onLogin">登录</div>
     <div class="login__link">立即注册</div>
   </div>
 </template>
 
 <script>
+import { useRouter } from 'vue-router'
 export default {
-  name: 'Login'
+  name: 'Login',
+  setup () {
+    const router = useRouter()
+    const onLogin = () => {
+      localStorage.isLogin = true
+      router.push('/')
+    }
+    return { onLogin }
+  }
 }
 </script>
 
