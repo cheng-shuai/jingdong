@@ -22,8 +22,7 @@ export default {
   setup () {
     const router = useRouter()
     const onRegister = () => {
-      localStorage.isLogin = true
-      router.push('/')
+      router.push('/login')
     }
     const onLogin = () => {
       router.push('/login')

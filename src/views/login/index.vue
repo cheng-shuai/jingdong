@@ -9,6 +9,7 @@
     </div>
     <div class="login__button" @click="onLogin">登录</div>
     <div class="login__link" @click="onRegister">立即注册</div>
+    <toast v-if="data.isToastShow" :message="data.toastMessage"/>
   </div>
 </template>
 
@@ -16,12 +17,16 @@
 import { post } from '@/utils/request'
 import { useRouter } from 'vue-router'
 import { reactive } from 'vue'
+import Toast from '../../components/Toast.vue'
 export default {
+  components: { Toast },
   name: 'Login',
   setup () {
     const data = reactive({
       username: '',
-      password: ''
+      password: '',
+      isToastShow: false,
+      toastMessage: '登录失败'
     })
     const router = useRouter()
     const onLogin = async () => {
@@ -33,7 +38,10 @@ export default {
         localStorage.isLogin = true
         router.push('/')
       } else {
-        alert('登录失败')
+        data.isToastShow = true
+        setTimeout(() => {
+          data.isToastShow = false
+        }, 2000)
       }
     }
     const onRegister = () => {
