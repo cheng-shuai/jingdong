@@ -2,10 +2,10 @@
   <div class="login">
     <img class="login__img" src="http://www.dell-lee.com/imgs/vue3/user.png" alt="">
     <div class="login__input">
-      <input type="text" placeholder="请输入手机号">
+      <input type="text" placeholder="请输入手机号" v-model="data.username">
     </div>
     <div class="login__input">
-      <input type="password" placeholder="请输入密码">
+      <input type="password" placeholder="请输入密码" v-model="data.password">
     </div>
     <div class="login__button" @click="onLogin">登录</div>
     <div class="login__link" @click="onRegister">立即注册</div>
@@ -13,20 +13,34 @@
 </template>
 
 <script>
+import { post } from '@/utils/request'
 import { useRouter } from 'vue-router'
+import { reactive } from 'vue'
 export default {
   name: 'Login',
   setup () {
+    const data = reactive({
+      username: '',
+      password: ''
+    })
     const router = useRouter()
-    const onLogin = () => {
-      localStorage.isLogin = true
-      router.push('/')
+    const onLogin = async () => {
+      const result = await post('/api/user/login', {
+        username: data.username,
+        password: data.password
+      })
+      if (result.data.errno === 0) {
+        localStorage.isLogin = true
+        router.push('/')
+      } else {
+        alert('登录失败')
+      }
     }
     const onRegister = () => {
       console.log(13)
       router.push('/register')
     }
-    return { onLogin, onRegister }
+    return { onLogin, onRegister, data }
   }
 }
 </script>
