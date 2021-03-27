@@ -18,6 +18,19 @@ const routes = [
         next()
       }
     }
+  },
+  {
+    path: '/register',
+    name: 'Register',
+    component: () => import('@/views/register/index'),
+    beforeEnter (to, from, next) {
+      const { isLogin } = localStorage
+      if (isLogin) {
+        next({ name: 'Home' })
+      } else {
+        next()
+      }
+    }
   }
 ]
 
@@ -28,7 +41,8 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
   const { isLogin } = localStorage
-  if (isLogin || to.name === 'Login') {
+  const isLoginRegister = (to.name === 'Login' || to.name === 'Register')
+  if (isLogin || isLoginRegister) {
     next()
   } else {
     next({ name: 'Login' })

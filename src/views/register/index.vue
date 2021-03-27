@@ -1,38 +1,40 @@
 <template>
-  <div class="login">
-    <img class="login__img" src="http://www.dell-lee.com/imgs/vue3/user.png" alt="">
-    <div class="login__input">
+  <div class="register">
+    <img class="register__img" src="http://www.dell-lee.com/imgs/vue3/user.png" alt="">
+    <div class="register__input">
       <input type="text" placeholder="请输入手机号">
     </div>
-    <div class="login__input">
+    <div class="register__input">
       <input type="password" placeholder="请输入密码">
     </div>
-    <div class="login__button" @click="onLogin">登录</div>
-    <div class="login__link" @click="onRegister">立即注册</div>
+    <div class="register__input">
+      <input type="password" placeholder="确认密码">
+    </div>
+    <div class="register__button" @click="onRegister">注册</div>
+    <div class="register__link" @click="onLogin">已有账号,立即登录</div>
   </div>
 </template>
 
 <script>
 import { useRouter } from 'vue-router'
 export default {
-  name: 'Login',
+  name: 'register',
   setup () {
     const router = useRouter()
-    const onLogin = () => {
+    const onRegister = () => {
       localStorage.isLogin = true
       router.push('/')
     }
-    const onRegister = () => {
-      console.log(13)
-      router.push('/register')
+    const onLogin = () => {
+      router.push('/login')
     }
-    return { onLogin, onRegister }
+    return { onRegister, onLogin }
   }
 }
 </script>
 
 <style lang="scss" scoped>
-.login {
+.register {
   display: flex;
   flex-direction: column;
   text-align: center;
