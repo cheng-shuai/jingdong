@@ -4,17 +4,17 @@ const routes = [
   {
     path: '/',
     name: 'Home',
-    component: () => import('@/views/home/index')
+    component: () => import('@/views/home/Home')
   },
   {
-    path: '/shop',
+    path: '/shop/:id',
     name: 'Shop',
-    component: () => import('@/views/shop/index')
+    component: () => import('@/views/shop/Shop')
   },
   {
     path: '/login',
     name: 'Login',
-    component: () => import('@/views/login/index'),
+    component: () => import('@/views/login/Login'),
     beforeEnter (to, from, next) {
       const { isLogin } = localStorage
       if (isLogin) {
@@ -27,7 +27,7 @@ const routes = [
   {
     path: '/register',
     name: 'Register',
-    component: () => import('@/views/register/index'),
+    component: () => import('@/views/register/Register'),
     beforeEnter (to, from, next) {
       const { isLogin } = localStorage
       if (isLogin) {

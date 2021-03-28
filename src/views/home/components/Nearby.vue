@@ -1,25 +1,11 @@
 <template>
   <div class="nearby">
     <div class="nearby">
-        <h3 class="nearby__title">附近店铺</h3>
-        <shop-info v-for="item in nearbyList" :key="item._id" :item="item" />
-        <!-- <div class="nearby__item" v-for="(item, index) in nearbyList" :key="index">
-          <div class="nearby__item__img">
-            <img :src="item.imgUrl" alt="">
-          </div>
-          <div class="nearby__item__content">
-            <div class="nearby__item__content__title">{{item.name}}</div>
-            <div class="nearby__item__content__tag">
-              <span>月售:{{item.sales}}</span>
-              <span>起送:{{item.expressLimit}}</span>
-              <span>基础运费:{{item.expressPrice}}</span>
-            </div>
-            <div class="nearby__item__content__hint">
-              {{item.slogan}}
-            </div>
-          </div>
-        </div> -->
-      </div>
+      <h3 class="nearby__title">附近店铺</h3>
+      <router-link :to="`/shop/${item._id}`" v-for="item in nearbyList" :key="item._id">
+        <shop-info :item="item" />
+      </router-link>
+    </div>
   </div>
 </template>
 
@@ -54,6 +40,9 @@ export default {
     font-family: PingFangSC-Medium;
     font-size: 18px;
     color: #333;
+  }
+  a {
+    text-decoration: none;
   }
   &__item {
     margin-top: 14px;
