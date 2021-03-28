@@ -15,6 +15,7 @@
     </div>
     <shop-info :item="data.item" :hideBorder="true" />
   </div>
+  <content />
 </template>
 
 <script>
@@ -22,6 +23,7 @@ import { reactive } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { get } from '@/utils/request'
 import ShopInfo from '../../components/ShopInfo.vue'
+import Content from './components/Content.vue'
 
 // 获取商铺的信息
 const getShopInfoEffect = () => {
@@ -45,7 +47,7 @@ const backClickEffect = () => {
   return { handBackClick }
 }
 export default {
-  components: { ShopInfo },
+  components: { ShopInfo, Content },
   name: 'Shop',
   setup () {
     const { getItemData, data } = getShopInfoEffect()
@@ -74,28 +76,33 @@ export default {
   }
   &__content {
     display: flex;
+    height: 32px;
     width: 310px;
     background-color: #F5F5F5;
     border-radius: 16px;
     &__icon {
+      line-height: 24px;
       margin-left: 16px;
-      line-height: 32px;
       .iconfont {
+        line-height: 32px;
         font-size: 18px;
         color: #B7B7B7;
       }
     }
     &__input {
-      flex: 1;
-      margin-right: 14px;
+      height: 32px;
+      width: 310px;
+      margin-right: 20px;
       input {
+        display: block;
+        height: 100%;
         width: 100%;
+        border: none;
         background: none;
         outline: none;
-        border: none;
-        font-size: 14px;
-        text-indent: 14px;
         height: 32px;
+        font-size: 14px;
+        text-indent: 10px;
       }
     }
   }
