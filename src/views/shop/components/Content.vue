@@ -1,24 +1,25 @@
 <template>
   <div class="content">
     <div class="category">
-      <div class="category__item category__item--active">全部商品</div>
-      <div class="category__item">秒杀</div>
-      <div class="category__item">新鲜水果</div>
-      <div class="category__item">休闲食品</div>
-      <div class="category__item">时令蔬菜</div>
-      <div class="category__item">肉蛋家禽</div>
+      <div
+        class="category__item"
+        :class="{'category__item--active': activeTab == item.tab}"
+        v-for="(item, index) in categoryList"
+        :key="index"
+        @click="onChangeCategory(item.tab)"
+      >{{item.name}}</div>
     </div>
     <div class="product">
-      <div class="product__item">
+      <div class="product__item" v-for="(item, index) in productList" :key="index">
         <div class="product__item__img">
-          <img src="http://www.dell-lee.com/imgs/vue3/near.png" alt="">
+          <img :src="item.imgUrl" alt="">
         </div>
         <div class="product__item__content">
-          <div class="product__item__content__name">番茄250g/份</div>
-          <div class="product__item__content__sale">月售10件</div>
+          <div class="product__item__content__name">{{item.name}}</div>
+          <div class="product__item__content__sale">月售{{item.sales}}件</div>
           <div class="product__item__content__price">
-            <span class="product__item__content__yen">&yen;33.6</span>
-            <span class="product__item__content__origin">&yen;34.6</span>
+            <span class="product__item__content__yen">&yen;{{item.price}}</span>
+            <span class="product__item__content__origin">&yen;{{item.oldPrice}}</span>
           </div>
         </div>
       </div>
@@ -27,8 +28,59 @@
 </template>
 
 <script>
+import { reactive, toRefs } from 'vue'
+import { useRoute } from 'vue-router'
+import { get } from '@/utils/request'
+
+// 获取商品列表
+const useGetProductItem = () => {
+  const route = useRoute()
+  const data = reactive({
+    productList: {}
+  })
+  const getProductItem = async (tab) => {
+    const result = await get(`api/shop/${route.params.id}/products`, { tab })
+    data.productList = result.data.data
+    console.log(tab)
+  }
+  const { productList } = toRefs(data)
+  return { getProductItem, productList }
+}
+
+// 更换商品分类
+const useOnChangeCategory = () => {
+  const { getProductItem } = useGetProductItem()
+  const data = reactive({
+    activeTab: 'all'
+  })
+  const onChangeCategory = (tab) => {
+    data.activeTab = tab
+    getProductItem(tab)
+  }
+  const { activeTab } = toRefs(data)
+  return { activeTab, onChangeCategory }
+}
+
 export default {
-  name: 'Content'
+  name: 'Content',
+  setup () {
+    const categoryList = [
+      {
+        name: '全部商品',
+        tab: 'all'
+      }, {
+        name: '秒杀',
+        tab: 'seckill'
+      }, {
+        name: '新鲜水果',
+        tab: 'fruit'
+      }
+    ]
+    const { onChangeCategory, activeTab } = useOnChangeCategory()
+    const { getProductItem, productList } = useGetProductItem()
+    getProductItem(activeTab)
+    return { categoryList, activeTab, onChangeCategory, productList }
+  }
 }
 </script>
 
