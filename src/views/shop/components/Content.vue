@@ -20,6 +20,9 @@
           <div class="product__item__content__price">
             <span class="product__item__content__yen">&yen;{{item.price}}</span>
             <span class="product__item__content__origin">&yen;{{item.oldPrice}}</span>
+            <div class="product__item__content__mins">-</div>
+            <div class="product__item__content__num">1</div>
+            <div class="product__item__content__plus">+</div>
           </div>
         </div>
       </div>
@@ -123,11 +126,13 @@ export default {
       height: 68px;
       margin-right: 16px;
       img {
-        width: 100%;
-        height: 100%;
+        width: 68px;
+        height: 68px;
       }
     }
     &__content {
+      font-size: 14px;
+      color: #666;
       &__name {
         height: 20px;
         font-weight: 700;
@@ -154,6 +159,30 @@ export default {
         font-size: 10px;
         color: #999;
         text-decoration-line: line-through;
+      }
+      &__mins,
+      &__plus{
+        border-radius: 50%;
+        font-size: 20px;
+        text-align: center;
+        line-height: 20px;
+        position: absolute;
+      }
+      &__mins {
+        right: 65px;
+        width: 19px;
+        height: 19px;border: 1px solid #666;
+      }
+      &__plus {
+        right: 18px;
+        width: 20px;
+        height: 20px;
+        color: #fff;
+        background-color: #0091FF;
+      }
+      &__num {
+        position: absolute;
+        right: 48px;
       }
     }
   }
