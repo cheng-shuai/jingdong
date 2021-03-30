@@ -16,6 +16,7 @@
     <shop-info :item="data.item" :hideBorder="true" />
   </div>
   <content />
+  <cart />
 </template>
 
 <script>
@@ -24,6 +25,7 @@ import { useRouter, useRoute } from 'vue-router'
 import { get } from '@/utils/request'
 import ShopInfo from '../../components/ShopInfo.vue'
 import Content from './components/Content.vue'
+import Cart from './components/Cart.vue'
 
 // 获取商铺的信息
 const getShopInfoEffect = () => {
@@ -47,7 +49,7 @@ const backClickEffect = () => {
   return { handBackClick }
 }
 export default {
-  components: { ShopInfo, Content },
+  components: { ShopInfo, Content, Cart },
   name: 'Shop',
   setup () {
     const { getItemData, data } = getShopInfoEffect()
