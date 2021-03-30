@@ -21,8 +21,8 @@
             <span class="product__item__content__yen">&yen;{{item.price}}</span>
             <span class="product__item__content__origin">&yen;{{item.oldPrice}}</span>
             <div class="product__item__content__mins">-</div>
-            <div class="product__item__content__num">1</div>
-            <div class="product__item__content__plus">+</div>
+            <div class="product__item__content__num">{{cartList?.[shopId]?.[item._id]?.count || 0}}</div>
+            <div class="product__item__content__plus" @click="onAddCount(shopId, item._id, item)">+</div>
           </div>
         </div>
       </div>
@@ -32,22 +32,23 @@
 
 <script>
 import { reactive, toRefs } from 'vue'
+import { useStore } from 'vuex'
 import { useRoute } from 'vue-router'
 import { get } from '@/utils/request'
 
-// 获取商品列表
+// 获取商品列表详情
 const useGetProductItem = () => {
   const route = useRoute()
+  const shopId = route.params.id
   const data = reactive({
     productList: {}
   })
   const getProductItem = async (tab) => {
-    const result = await get(`api/shop/${route.params.id}/products`, { tab })
+    const result = await get(`api/shop/${shopId}/products`, { tab })
     data.productList = result.data.data
-    console.log(tab)
   }
   const { productList } = toRefs(data)
-  return { getProductItem, productList }
+  return { getProductItem, productList, shopId }
 }
 
 // 更换商品分类
@@ -62,6 +63,16 @@ const useOnChangeCategory = () => {
   }
   const { activeTab } = toRefs(data)
   return { activeTab, onChangeCategory }
+}
+
+// 购物车相关方法
+const useCartEffect = () => {
+  const store = useStore()
+  const { cartList } = toRefs(store.state)
+  const onAddCount = (shopId, productId, productInfo) => {
+    store.commit('addCount', { shopId, productId, productInfo })
+  }
+  return { onAddCount, cartList }
 }
 
 export default {
@@ -80,9 +91,10 @@ export default {
       }
     ]
     const { onChangeCategory, activeTab } = useOnChangeCategory()
-    const { getProductItem, productList } = useGetProductItem()
+    const { getProductItem, productList, shopId } = useGetProductItem()
+    const { onAddCount, cartList } = useCartEffect()
     getProductItem(activeTab)
-    return { categoryList, activeTab, onChangeCategory, productList }
+    return { categoryList, activeTab, onChangeCategory, productList, shopId, onAddCount, cartList }
   }
 }
 </script>
