@@ -3,10 +3,10 @@
     <div class="check">
       <div class="check__icon">
         <img src="http://www.dell-lee.com/imgs/vue3/basket.png" class="ckeck__icon__img" alt="">
-        <div class="check__icon__tag">1</div>
+        <div class="check__icon__tag">{{totalCount}}</div>
       </div>
       <div class="check__info">
-        总计：<span class="check__info__price">&yen; 128</span>
+        总计：<span class="check__info__price">&yen; {{totalPrice}}</span>
       </div>
       <div class="check__btn">
         去结算
@@ -16,8 +16,47 @@
 </template>
 
 <script>
+import { useRoute } from 'vue-router'
+import { useStore } from 'vuex'
+import { computed } from 'vue'
+
+// 计算购物车商品的数量和价格
+const productCount = () => {
+  const route = useRoute()
+  const store = useStore()
+  const shopId = route.params.id
+  const cartList = store.state.cartList
+  const totalCount = computed(() => {
+    const productList = cartList[shopId]
+    let count = 0
+    if (productList) {
+      for (const i in productList) {
+        const product = productList[i]
+        count += product.count
+      }
+    }
+    return count
+  })
+  const totalPrice = computed(() => {
+    const productList = cartList[shopId]
+    let price = 0
+    if (productList) {
+      for (const i in productList) {
+        const product = productList[i]
+        price += product.count * product.price
+      }
+    }
+    return price.toFixed(2)
+  })
+  return { totalCount, totalPrice }
+}
+
 export default {
-  name: 'Cart'
+  name: 'Cart',
+  setup () {
+    const { totalCount, totalPrice } = productCount()
+    return { totalCount, totalPrice }
+  }
 }
 </script>
 
@@ -45,10 +84,10 @@ export default {
     &__tag {
       position: absolute;
       top: 7px;
-      right: 19px;
-      width: 15px;
+      left: 50px;
+      min-width: 15px;
       height: 15px;
-      border-radius: 50%;
+      border-radius: 15px;
       background-color: #E93B3B;
       font-size: 10px;
       text-align: center;

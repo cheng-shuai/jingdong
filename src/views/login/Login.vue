@@ -45,7 +45,6 @@ export default {
       }
     }
     const onRegister = () => {
-      console.log(13)
       router.push('/register')
     }
     return { onLogin, onRegister, data }

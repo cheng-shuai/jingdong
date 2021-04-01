@@ -20,9 +20,9 @@
           <div class="product__item__content__price">
             <span class="product__item__content__yen">&yen;{{item.price}}</span>
             <span class="product__item__content__origin">&yen;{{item.oldPrice}}</span>
-            <div class="product__item__content__mins">-</div>
+            <div class="product__item__content__mins" @click="changeCartInfo(shopId, item._id, item, -1)">-</div>
             <div class="product__item__content__num">{{cartList?.[shopId]?.[item._id]?.count || 0}}</div>
-            <div class="product__item__content__plus" @click="onAddCount(shopId, item._id, item)">+</div>
+            <div class="product__item__content__plus" @click="changeCartInfo(shopId, item._id, item, 1)">+</div>
           </div>
         </div>
       </div>
@@ -69,10 +69,10 @@ const useOnChangeCategory = () => {
 const useCartEffect = () => {
   const store = useStore()
   const { cartList } = toRefs(store.state)
-  const onAddCount = (shopId, productId, productInfo) => {
-    store.commit('addCount', { shopId, productId, productInfo })
+  const changeCartInfo = (shopId, productId, productInfo, num) => {
+    store.commit('changeCartInfo', { shopId, productId, productInfo, num })
   }
-  return { onAddCount, cartList }
+  return { changeCartInfo, cartList }
 }
 
 export default {
@@ -92,9 +92,9 @@ export default {
     ]
     const { onChangeCategory, activeTab } = useOnChangeCategory()
     const { getProductItem, productList, shopId } = useGetProductItem()
-    const { onAddCount, cartList } = useCartEffect()
+    const { changeCartInfo, cartList } = useCartEffect()
     getProductItem(activeTab)
-    return { categoryList, activeTab, onChangeCategory, productList, shopId, onAddCount, cartList }
+    return { categoryList, activeTab, onChangeCategory, productList, shopId, changeCartInfo, cartList }
   }
 }
 </script>
