@@ -1,5 +1,22 @@
 <template>
   <div class="cart">
+    <div class="product">
+      <div class="product__item" v-for="(item, index) in productList" :key="index">
+        <div class="product__item__img">
+          <img :src="item.imgUrl" alt="">
+        </div>
+        <div class="product__item__content">
+          <div class="product__item__content__name">{{item.name}}</div>
+          <div class="product__item__content__price">
+            <span class="product__item__content__yen">&yen;{{item.price}}</span>
+            <span class="product__item__content__origin">&yen;{{item.oldPrice}}</span>
+            <div class="product__item__content__mins" @click="changeCartInfo(shopId, item._id, item, -1)">-</div>
+            <div class="product__item__content__num">{{item.count || 0}}</div>
+            <div class="product__item__content__plus" @click="changeCartInfo(shopId, item._id, item, 1)">+</div>
+          </div>
+        </div>
+      </div>
+    </div>
     <div class="check">
       <div class="check__icon">
         <img src="http://www.dell-lee.com/imgs/vue3/basket.png" class="ckeck__icon__img" alt="">
@@ -48,14 +65,21 @@ const productCount = () => {
     }
     return price.toFixed(2)
   })
-  return { totalCount, totalPrice }
+  const productList = computed(() => {
+    const productList = cartList[shopId]
+    return productList
+  })
+  const changeCartInfo = (shopId, productId, productInfo, num) => {
+    store.commit('changeCartInfo', { shopId, productId, productInfo, num })
+  }
+  return { totalCount, totalPrice, shopId, productList, changeCartInfo }
 }
 
 export default {
   name: 'Cart',
   setup () {
-    const { totalCount, totalPrice } = productCount()
-    return { totalCount, totalPrice }
+    const { totalCount, totalPrice, productList, shopId, changeCartInfo } = productCount()
+    return { totalCount, totalPrice, productList, shopId, changeCartInfo }
   }
 }
 </script>
@@ -68,6 +92,82 @@ export default {
   bottom: 0;
   padding: 0;
   margin: 0;
+}
+.product {
+  background-color: #fff;
+  flex: 1;
+  margin-top: 8px;
+  overflow-y: auto;
+  &__item {
+    margin: 8px 16px 8px 16px;
+    display: flex;
+    height: 62px;
+    border-bottom: 1px solid #f1f1f1;
+    &__img {
+      width: 46px;
+      height: 46px;
+      margin-right: 16px;
+      img {
+        width: 46px;
+        height: 46px;
+      }
+    }
+    &__content {
+      font-size: 14px;
+      color: #666;
+      &__name {
+        height: 20px;
+        font-weight: 700;
+        font-size: 14px;
+        color: #333;
+      }
+      &__sale {
+        height: 16px;
+        margin: 6px 0;
+        font-size: 12px;
+        color: #333;
+      }
+      &__price {
+        height: 20px;
+        display: flex;
+        align-items: center;
+      }
+      &__yen {
+        font-size: 14px;
+        color: #E93B3B;
+      }
+      &__origin {
+        margin-left: 6px;
+        font-size: 10px;
+        color: #999;
+        text-decoration-line: line-through;
+      }
+      &__mins,
+      &__plus{
+        border-radius: 50%;
+        font-size: 20px;
+        text-align: center;
+        line-height: 20px;
+        position: absolute;
+      }
+      &__mins {
+        right: 65px;
+        width: 19px;
+        height: 19px;border: 1px solid #666;
+      }
+      &__plus {
+        right: 18px;
+        width: 20px;
+        height: 20px;
+        color: #fff;
+        background-color: #0091FF;
+      }
+      &__num {
+        position: absolute;
+        right: 48px;
+      }
+    }
+  }
 }
 .check {
   display: flex;
