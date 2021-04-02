@@ -31,6 +31,7 @@ export default createStore({
       }
       product.count = product.count + playload.num
       if (product.count < 0) { product.count = 0 }
+      if (product.count > 0) { product.checked = true }
       shopInfo[productId] = product
       state.cartList[shopId] = shopInfo
     }

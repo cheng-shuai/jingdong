@@ -9,6 +9,9 @@
           class="product__item"
           v-if="item.count > 0"
         >
+          <div class="product__item__checked">
+            <i class="iconfont" :class="item.checked ? 'icon-xuanzhongduigou' : 'icon-icons-' "></i>
+          </div>
           <div class="product__item__img">
             <img :src="item.imgUrl" alt="">
           </div>
@@ -111,6 +114,13 @@ export default {
     display: flex;
     height: 62px;
     border-bottom: 1px solid #f1f1f1;
+    &__checked {
+      .iconfont {
+        margin-right: 16px;
+        font-size: 20px;
+        color: #0091FF;
+      }
+    }
     &__img {
       width: 46px;
       height: 46px;
