@@ -1,21 +1,29 @@
 <template>
   <div class="cart">
     <div class="product">
-      <div class="product__item" v-for="(item, index) in productList" :key="index">
-        <div class="product__item__img">
-          <img :src="item.imgUrl" alt="">
-        </div>
-        <div class="product__item__content">
-          <div class="product__item__content__name">{{item.name}}</div>
-          <div class="product__item__content__price">
-            <span class="product__item__content__yen">&yen;{{item.price}}</span>
-            <span class="product__item__content__origin">&yen;{{item.oldPrice}}</span>
-            <div class="product__item__content__mins" @click="changeCartInfo(shopId, item._id, item, -1)">-</div>
-            <div class="product__item__content__num">{{item.count || 0}}</div>
-            <div class="product__item__content__plus" @click="changeCartInfo(shopId, item._id, item, 1)">+</div>
+      <template
+        v-for="(item, index) in productList"
+        :key="index"
+      >
+        <div
+          class="product__item"
+          v-if="item.count > 0"
+        >
+          <div class="product__item__img">
+            <img :src="item.imgUrl" alt="">
+          </div>
+          <div class="product__item__content">
+            <div class="product__item__content__name">{{item.name}}</div>
+            <div class="product__item__content__price">
+              <span class="product__item__content__yen">&yen;{{item.price}}</span>
+              <span class="product__item__content__origin">&yen;{{item.oldPrice}}</span>
+              <div class="product__item__content__mins" @click="changeCartInfo(shopId, item._id, item, -1)">-</div>
+              <div class="product__item__content__num">{{item.count || 0}}</div>
+              <div class="product__item__content__plus" @click="changeCartInfo(shopId, item._id, item, 1)">+</div>
+            </div>
           </div>
         </div>
-      </div>
+      </template>
     </div>
     <div class="check">
       <div class="check__icon">
